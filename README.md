@@ -1,4 +1,4 @@
-# Awesome Project Build with TypeORM
+# Pinehouse Sql Backend
 
 Steps to run this project:
 
