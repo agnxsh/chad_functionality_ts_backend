@@ -1,5 +1,5 @@
-import * as express from "express";
-import * as bodyParser from "body-parser";
+import express from "express";
+import bodyParser from "body-parser";
 import { Request, Response } from "express";
 import { AppDataSource } from "./utils/data-source";
 import { Routes } from "./routes";

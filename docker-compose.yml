@@ -14,7 +14,7 @@ services:
     image: redis:alpine
     container_name: redis
     ports:
-      - "8080:8080"
+      - "55000:8080"
     volumes:
       - redisDB:/data
 volumes:
