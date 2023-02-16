@@ -11,5 +11,42 @@ export const deserializeUser = async (
 ) => {
   try {
     let access_token;
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      access_token = req.headers.authorization.split(" ")[1];
+    } else if ((req.cookies, access_token)) {
+      access_token = req.cookies.access_token;
+    }
+
+    if (!access_token) {
+      return next(new AppError(401, "You are not logged in"));
+    }
+
+    //Validate the access token
+    const decoded = verifyJwt<{ sub: string }>(
+      access_token,
+      "accessTokenPublicKey"
+    );
+
+    if (!decoded) {
+      return next(new AppError(401, "Invalid token or User doesn't exist"));
+    }
+
+    //check if the user has a valid session
+    const session = await redisClient.get(decoded.sub);
+
+    //check if the user still exists
+    const user = await findUserById(JSON.parse(<string>session).id);
+
+    if (!user) {
+      return next(new AppError(401, "Invalid token or session has expired"));
+    }
+
+    //adding user to the local variables of the request
+    res.locals.user = user;
+
+    next();
   } catch (err: any) {}
 };
