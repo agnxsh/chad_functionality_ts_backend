@@ -1,4 +1,4 @@
-# Pinehouse Sql Backend
+# Redis Sql Backend
 
 Steps to run this project:
 
